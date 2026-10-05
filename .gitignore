@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Maven
+**/target/
+**/.mvn/timing.properties
+
+# IntelliJ
+**/.idea/
+*.iml
+
+# VS Code
+**/.vscode/
+
+# Logs
+*.log
+
+# Spring Boot
+**/application-local.properties
+**/application-local.yml
+**/application-local.yaml
