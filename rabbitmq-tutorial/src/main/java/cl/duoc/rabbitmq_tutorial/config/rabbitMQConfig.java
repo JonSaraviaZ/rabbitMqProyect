@@ -9,14 +9,14 @@ import org.springframework.amqp.core.BindingBuilder;
 
 @Configuration 
 public class rabbitMQConfig { //Acá indicamos que el spring necesita una cola de mensajes para poder enviar y recibir mensajes, por lo que creamos una clase de configuración para crear la cola de mensajes
-    public static final String QUEUE_NAME ALL_LOGS_QUEUE= "all_logs_queue"; //Acá indicamos el nombre de la cola de mensajes que vamos a crear
+    public static final String ALL_LOGS_QUEUE= "all_logs_queue"; //Acá indicamos el nombre de la cola de mensajes que vamos a crear
 
     public static final String ERRORS_QUEUE = "errors_only_queue"; //Acá indicamos el nombre de la cola de mensajes de error que vamos a crear
 
     public static final String EXCHANGE = "logs_direct_exchange"; //Acá indicamos el nombre del exchange que vamos a crear
 
     //Logs
-    
+
     @Bean
     public Queue allLogsQueue() {
         return new Queue(ALL_LOGS_QUEUE, true); // si es false, la cola no es durable, si es true, la cola es durable y sobrevive a reinicios del broker 
@@ -39,7 +39,7 @@ public class rabbitMQConfig { //Acá indicamos que el spring necesita una cola d
         return BindingBuilder
         .bind(allLogsQueue()) //indicamos desde dónde vienen los mensajes
         .to(logsExchange()) // hacia donde van los mensajes
-        .with("INFO") // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
+        .with("INFO"); // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
     }
 
     @Bean
@@ -47,15 +47,23 @@ public class rabbitMQConfig { //Acá indicamos que el spring necesita una cola d
         return BindingBuilder
         .bind(allLogsQueue()) //indicamos desde dónde vienen los mensajes
         .to(logsExchange()) // hacia donde van los mensajes
-        .with("WARNING") // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
+        .with("WARNING"); // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
     }
 
     @Bean
-    public Binding bindingErroroNLY(){ //Acá indicamos que vamos a crear un binding, que es una relación entre una cola y un exchange, y que vamos a utilizar la clave de enrutamiento "info" para enviar mensajes a la cola de mensajes de todos los logs.
+    public Binding bindingError(){ //Acá indicamos que vamos a crear un binding, que es una relación entre una cola y un exchange, y que vamos a utilizar la clave de enrutamiento "info" para enviar mensajes a la cola de mensajes de todos los logs.
+        return BindingBuilder
+        .bind(allLogsQueue()) //indicamos desde dónde vienen los mensajes
+        .to(logsExchange()) // hacia donde van los mensajes
+        .with("ERROR"); // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
+    }
+
+    @Bean
+    public Binding bindingErrorOnly(){ //Acá indicamos que vamos a crear un binding, que es una relación entre una cola y un exchange, y que vamos a utilizar la clave de enrutamiento "info" para enviar mensajes a la cola de mensajes de todos los logs.
         return BindingBuilder
         .bind(errorOnlyQueue()) //indicamos desde dónde vienen los mensajes
         .to(logsExchange()) // hacia donde van los mensajes
-        .with("ERROR") // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
+        .with("ERROR"); // qué tipo de mensaje se va a enviar, en este caso, mensajes de información
     }
 
 }

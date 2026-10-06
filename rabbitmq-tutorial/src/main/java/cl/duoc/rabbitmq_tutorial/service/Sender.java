@@ -14,9 +14,11 @@ public class Sender {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void enviar(String mensaje) {
-        rabbitTemplate.convertAndSend(rabbitMQConfig.QUEUE_NAME, mensaje);
+    public void enviar(String nivel, String mensaje) {
+        rabbitTemplate.convertAndSend(rabbitMQConfig.EXCHANGE, nivel, mensaje);
 
         System.out.println("Enviado --> '" + mensaje + "'");
     }
+
+
 }

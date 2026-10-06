@@ -3,12 +3,14 @@ package cl.duoc.rabbitmq_tutorial.service;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Service;
 
-@Service 
-public class Receiver {
+import cl.duoc.rabbitmq_tutorial.config.rabbitMQConfig;
 
-    @RabbitListener (queues = rabbitMQConfig.QUEUE_NAME)
+@Service 
+public class ReceiverAllLogs {
+
+    @RabbitListener (queues = rabbitMQConfig.ALL_LOGS_QUEUE)
     public void recibir(String mensaje) {
-        System.out.println(" Recibido -->'" + mensaje + "'");
+        System.out.println(" ALL LOGS -->'" + mensaje + "'");
     }
 
 }
